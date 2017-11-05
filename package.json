@@ -1,0 +1,26 @@
+{
+  "name": "verity",
+  "version": "0.1.0",
+  "description": "Dynamic build version generator service",
+  "author": "drexler",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drexler/verity.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/drexler/verity/issues"
+  },
+  "homepage": "https://github.com/drexler/verity#readme",
+  "devDependencies": {
+    "serverless-webpack": "^4.0.0",
+    "ts-loader": "^3.1.1",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1",
+    "webpack": "^3.8.1"
+  }
+}
