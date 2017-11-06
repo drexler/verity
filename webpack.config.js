@@ -1,6 +1,8 @@
 var path = require('path');
 var fs = require('fs');
 const slsw = require('serverless-webpack');
+var SRC = path.join(__dirname, 'src/');
+var NODE_MODULES = path.join(__dirname, 'node_modules/');
 
 var nodeModules = {};
 fs.readdirSync('node_modules')
@@ -33,6 +35,7 @@ module.exports = {
     ]
   },
   resolve: {
+    modules: [SRC, NODE_MODULES],
     extensions: ['.ts', '.tsx', '.js']
   }
 };

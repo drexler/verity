@@ -6,7 +6,7 @@ provider:
 
 functions:
   generateNextVersion:
-    handler: version-service.generate
+    handler: src/version-service.generate
     events: # endpoint triggering lambda
       - http:
           path: /version
