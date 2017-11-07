@@ -32,13 +32,7 @@ export class Github implements ISourceCodeManagerApi {
    */
   public async listRepositories(): Promise<any> {
     const url = `${Github.baseUri}/users/${this.user}/repos`;
-    const response = await request
-                        .get(url)
-                        .set('Accept', 'application/json');
-
-    return await Promise.all(response.body.map(async (repo): Promise<any> => {
-      return repo.name;
-    }));
+    return await this.apiGetResourceCollection(url);
   }
 
   /**
@@ -49,13 +43,7 @@ export class Github implements ISourceCodeManagerApi {
    */
   public async listBranches(repository: string): Promise<any> {
     const url = `${Github.baseUri}/repos/${this.user}/${repository}/branches`;
-    const response = await request
-                        .get(url)
-                        .set('Accept', 'application/json');
-
-    return await Promise.all(response.body.map(async (branch): Promise<any> => {
-      return branch.name;
-    }));
+    return await this.apiGetResourceCollection(url);
   }
 
   /**
@@ -66,12 +54,33 @@ export class Github implements ISourceCodeManagerApi {
    */
   public async listTags(repository: string): Promise<any> {
     const url = `${Github.baseUri}/repos/${this.user}/${repository}/tags`;
+    return await this.apiGetResourceCollection(url);
+  }
+
+  /**
+   * Retrieves the latest commit tag within a given repository
+   * @param {string} respository - The name of the repository.
+   * @return - Most recent tag in the respository.
+   * @throws Will throw an error if the call to GitHub's api fails
+   */
+  public async latestTag(repository: string): Promise<string> {
+    const tags =  await this.listTags(repository);
+    return tags[0];
+  }
+
+  /**
+   * Retrieves a named collection of resources witin a specified repository
+   * @param {string} url - uri to the resource collection
+   * @return - List of items within the resource collection.
+   * @throws Will throw an error if the call to GitHub's api fails
+   */
+  private async apiGetResourceCollection(url: string): Promise<any> {
     const response = await request
                         .get(url)
                         .set('Accept', 'application/json');
 
-    return await Promise.all(response.body.map(async (tag): Promise<any> => {
-      return tag.name;
+    return await Promise.all(response.body.map(async (resourceItem): Promise<any> => {
+      return resourceItem.name;
     }));
   }
 

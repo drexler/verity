@@ -24,4 +24,11 @@ export interface ISourceCodeManagerApi {
    * @return - List of commit tags in the respository.
    */
   listTags(repository: string): any;
+
+  /**
+   * Retrieves the latest commit tag within a given repository
+   * @param {string} respository - The name of the repository.
+   * @return {string} - Most recent tag in the respository.
+   */
+  latestTag(repository: string): any;
 }
