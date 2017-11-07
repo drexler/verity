@@ -6,6 +6,7 @@ export async function generate(event: any, context: any, callback: any) {
   const repos = await githubApi.listRepositories();
   const branches = await githubApi.listBranches('verity');
   const tags = await githubApi.listTags('velson-node');
+  const mostRecentTag = await githubApi.latestTag('velson-node');
 
   const response = {
     statusCode: 200,
@@ -13,7 +14,8 @@ export async function generate(event: any, context: any, callback: any) {
       version: '3.1.3',
       repositories: repos,
       branchesVerity: branches,
-      velsonNodeTags: tags
+      velsonNodeTags: tags,
+      recentTag: mostRecentTag
     })
   };
   callback(null, response);
