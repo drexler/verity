@@ -1,4 +1,5 @@
 import {Github} from './scm/github';
+import {Bugzilla} from './issue-tracker/bugzilla';
 
 export async function generate(event: any, context: any, callback: any) {
 
@@ -8,6 +9,11 @@ export async function generate(event: any, context: any, callback: any) {
   const tags = await githubApi.listTags('velson-node');
   const mostRecentTag = await githubApi.latestTag('velson-node');
 
+  // issue tracking
+  const bugzillaApi = new Bugzilla('accesstoken', 'https://bugzilla.mozilla.org');
+  const ticket = await bugzillaApi.getIssue(699113);
+  const comments = await bugzillaApi.getComments(699113);
+
   const response = {
     statusCode: 200,
     body: JSON.stringify({
@@ -15,7 +21,9 @@ export async function generate(event: any, context: any, callback: any) {
       repositories: repos,
       branchesVerity: branches,
       velsonNodeTags: tags,
-      recentTag: mostRecentTag
+      recentTag: mostRecentTag,
+      bugzillaTicket: ticket,
+      bugzillaComments: comments
     })
   };
   callback(null, response);
