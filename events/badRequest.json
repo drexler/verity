@@ -1,0 +1,57 @@
+{
+    "event": {
+        "resource": "/version",
+        "path": "/version",
+        "httpMethod": "POST",
+        "headers": {
+            "Accept": "*/*",
+            "Accept-Encoding": "gzip, deflate",
+            "cache-control": "no-cache",
+            "CloudFront-Forwarded-Proto": "https",
+            "CloudFront-Is-Desktop-Viewer": "true",
+            "CloudFront-Is-Mobile-Viewer": "false",
+            "CloudFront-Is-SmartTV-Viewer": "false",
+            "CloudFront-Is-Tablet-Viewer": "false",
+            "CloudFront-Viewer-Country": "US",
+            "Content-Type": "application/json",
+            "Host": "8a7jp0jil8.execute-api.us-east-1.amazonaws.com",
+            "Postman-Token": "3c02053b-a819-4b50-a759-b19821129580",
+            "User-Agent": "PostmanRuntime/6.4.1",
+            "Via": "1.1 12988681512372d827da78863e01c49a.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id": "2zm8tVzfiKL-bgcgE0QNBrnEJ6ysV5ZbXZM4bZbd_w3JZn6M3BtgRw==",
+            "X-Amzn-Trace-Id": "Root=1-5a04c198-570be10c1c0c7bb93537c44c",
+            "X-Forwarded-For": "71.169.145.194, 205.251.250.43",
+            "X-Forwarded-Port": "443",
+            "X-Forwarded-Proto": "https"
+        },
+        "queryStringParameters": null,
+        "pathParameters": null,
+        "stageVariables": null,
+        "requestContext": {
+            "path": "/dev/version",
+            "accountId": "0894825993849228",
+            "resourceId": "24ewux",
+            "stage": "dev",
+            "requestId": "d1ef1b70-c590-11e7-94b4-a1616102c9c1",
+            "identity": {
+                "cognitoIdentityPoolId": null,
+                "accountId": null,
+                "cognitoIdentityId": null,
+                "caller": null,
+                "apiKey": "",
+                "sourceIp": "71.169.145.194",
+                "accessKey": null,
+                "cognitoAuthenticationType": null,
+                "cognitoAuthenticationProvider": null,
+                "userArn": null,
+                "userAgent": "PostmanRuntime/6.4.1",
+                "user": null
+            },
+            "resourcePath": "/version",
+            "httpMethod": "POST",
+            "apiId": "8a7jp0jil8"
+        },
+        "body": "{\r\n  \"scm\": {\r\n    \"name\": \"BitBucket\",\r\n    \"organization\": \"iSystemsTeam\",\r\n    \"user\": \"drexler\",\r\n    \"token\": \"FooManchu\"\r\n  },\r\n  \"issue-tracker\": {\r\n    \"name\": \"Jira\",\r\n    \"project\": \"Orion\",\r\n    \"issue\": {\r\n      \"id\": 1000,\r\n      \"alias\": \"PF-1000\"\r\n    },\r\n    \"accessToken\": \"FooManchu\"\r\n  }\r\n}",
+        "isBase64Encoded": false
+    }
+}

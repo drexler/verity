@@ -1,30 +1,50 @@
-import {Github} from './scm/github';
-import {Bugzilla} from './issue-tracker/bugzilla';
+import { Github } from './scm/github';
+import { Bugzilla } from './issue-tracker/bugzilla';
+import { BitBucket } from './scm/bitbucket';
+import { Jira } from './issue-tracker/jira';
+
+let parameters: {
+  scm: {
+    name: string,
+    organization: string,
+    user: string,
+    apiAccessToken: string
+  },
+  issueMgr: {
+    name: string,
+    project: string,
+    issueIdOrAlias: string | number,
+    apiAccessToken: string
+  }
+};
+
+function buildLambdaErrorResponse(statusCode: number, message: string, developerMessage: any): any {
+  return {
+    httpStatus: statusCode,
+    message,
+    developerMessage
+  };
+}
 
 export async function generate(event: any, context: any, callback: any) {
+  let response: any;
+  let responseBody: any;
 
-  const githubApi = new Github('access token', undefined, 'drexler');
-  const repos = await githubApi.listRepositories();
-  const branches = await githubApi.listBranches('verity');
-  const tags = await githubApi.listTags('velson-node');
-  const mostRecentTag = await githubApi.latestTag('velson-node');
+  try {
+    parameters = JSON.parse(event.body);
+    response = {
+      statusCode: 200,
+      body: JSON.stringify(parameters)
+    };
+    callback(undefined, response);
 
-  // issue tracking
-  const bugzillaApi = new Bugzilla('accesstoken', 'https://bugzilla.mozilla.org');
-  const ticket = await bugzillaApi.getIssue(699113);
-  const comments = await bugzillaApi.getComments(699113);
+  } catch (error) {
+    responseBody = buildLambdaErrorResponse(400, 'Invalid request', error.message);
+    response = {
+      statusCode: responseBody.httpStatus,
+      body: JSON.stringify(responseBody)
+    };
+    callback(undefined, response);
+  }
 
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      version: '3.1.3',
-      repositories: repos,
-      branchesVerity: branches,
-      velsonNodeTags: tags,
-      recentTag: mostRecentTag,
-      bugzillaTicket: ticket,
-      bugzillaComments: comments
-    })
-  };
-  callback(null, response);
 }

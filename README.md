@@ -10,6 +10,6 @@ An [AWS Lambda](https://aws.amazon.com/lambda/)-based build version generator us
 - Clone the project.
 - Deploy the service: `serverless deploy -v`
 - Invoke the function locally: `serverless invoke --local -f generateNextVersion`
-- Invoke the function locally with event: `serverless invoke --local -f generateNextVersion --path event.json`
+- Invoke the function locally with event: `serverless invoke --local -f generateNextVersion --path events/validRequest.json`
 - Bundle and just see the output: `serverless webpack --out dist`
 - Delete the service: `serverless remove`
