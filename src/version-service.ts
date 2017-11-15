@@ -8,7 +8,7 @@ let parameters: {
     name: string,
     organization: string,
     user: string,
-    apiAccessToken: string
+    repo: string
   },
   issueMgr: {
     name: string,
@@ -19,32 +19,60 @@ let parameters: {
 };
 
 function buildLambdaErrorResponse(statusCode: number, message: string, developerMessage: any): any {
-  return {
+  const payload = {
     httpStatus: statusCode,
     message,
     developerMessage
+  };
+
+  return {
+    statusCode: payload.httpStatus,
+    body: JSON.stringify(payload)
   };
 }
 
 export async function generate(event: any, context: any, callback: any) {
   let response: any;
-  let responseBody: any;
 
+  // validate request
   try {
     parameters = JSON.parse(event.body);
-    response = {
-      statusCode: 200,
-      body: JSON.stringify(parameters)
-    };
-    callback(undefined, response);
-
   } catch (error) {
-    responseBody = buildLambdaErrorResponse(400, 'Invalid request', error.message);
-    response = {
-      statusCode: responseBody.httpStatus,
-      body: JSON.stringify(responseBody)
-    };
+    response = buildLambdaErrorResponse(400, 'Invalid request', error.message);
     callback(undefined, response);
   }
 
+  const scm = parameters.scm;
+
+  if (scm.name !== 'BitBucket') {
+    response = buildLambdaErrorResponse(400, 'Invalid request', `unsupported issue manager: ${scm.name}`);
+    callback(undefined, response);
+  } else {
+
+    const authUrl = `${process.env.SCM_AUTH_URL}`;
+    const apiKey = `${process.env.SCM_API_KEY}`;
+    const apiSecret = `${process.env.SCM_API_SECRET}`;
+
+    try {
+      const bitbucketApi = new BitBucket(apiKey, apiSecret, authUrl, scm.organization, scm.user);
+      const repos = await bitbucketApi.listRepositories();
+      const latestTag = await bitbucketApi.latestTag(scm.repo);
+      const tags = await bitbucketApi.listTags(scm.repo);
+
+      response = {
+        statusCode: 200,
+        body: JSON.stringify({
+          repositories: repos,
+          nightshade: {
+            latestTag,
+            tags
+          }
+        })
+      };
+      callback(undefined, response);
+    } catch (error) {
+      response = buildLambdaErrorResponse(error.status, 'Unable to return latest version', error);
+      callback(undefined, response);
+    }
+  }
 }

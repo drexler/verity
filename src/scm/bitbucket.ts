@@ -1,12 +1,15 @@
 import * as request from 'superagent';
 import { ISourceCodeManagerApi } from './ISourceCodeManagerApi';
+import { Authenticator} from '../authentication';
 
 /**
- * Wrapper class for Github's API
+ * Wrapper class for BitBucket's API
  *
  * @author drexler
  */
-export class BitBucket implements ISourceCodeManagerApi {
+export class BitBucket
+  extends Authenticator
+  implements ISourceCodeManagerApi {
 
   private static readonly baseUri = 'https://api.bitbucket.org/2.0';
   private accessToken: string;
@@ -19,10 +22,11 @@ export class BitBucket implements ISourceCodeManagerApi {
    * @param {string} [organization] - Name of organization with ownership of repositories.
    * @param {string} [user] - Name of user with ownership of repositories.
    */
-  public constructor(accessToken: string, organization?: string, user?: string) {
-    this.accessToken = accessToken;
+  public constructor(apiKey: string, apiSecret: string, authUrl: string, organization?: string, user?: string) {
+    super(authUrl, apiKey, apiSecret);
     this.organization = organization;
     this.user = user;
+    this.accessToken = undefined;
   }
 
   /**
@@ -75,9 +79,10 @@ export class BitBucket implements ISourceCodeManagerApi {
    * @throws Will throw an error if the call to BitBucket's api fails
    */
   private async apiGetResourceCollection(url: string): Promise<any> {
+    this.accessToken = await super.getAccessToken();
     const response = await request
       .get(url)
-      .set('Authorization', this.accessToken)
+      .set('Authorization', `Bearer ${this.accessToken}`)
       .set('Accept', 'application/json');
 
     return await Promise.all(response.body.values.map(async (resourceItem): Promise<any> => {
