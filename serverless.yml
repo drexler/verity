@@ -3,6 +3,10 @@ service: drexler-version-generator
 provider:
   name: aws
   runtime: nodejs6.10
+  environment:
+    SCM_API_SECRET: 'HUSH_HUSH_CHANGE_THIS'
+    SCM_API_KEY: 'HUSH_HUSH_CHANGE_THIS'
+    SCM_AUTH_URL: 'https://bitbucket.org/site/oauth2/access_token'
 
 functions:
   generateNextVersion:

@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Generate Next Version",
+            "outFiles": ["${workspaceRoot}/dist/**/*.js"],
+            "args": [
+                "node_modules/serverless/bin/serverless",
+                "invoke", 
+                "-f", 
+                "generateNextVersion", 
+                "--path", 
+                "events/validRequest.json"
+            ],
+            "useWSL": true,
+            "timeout": 30000
+        }
+    ]
+}
