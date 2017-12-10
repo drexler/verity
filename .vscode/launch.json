@@ -7,14 +7,15 @@
             "name": "Generate Next Version",
             "outFiles": ["${workspaceRoot}/dist/**/*.js"],
             "args": [
-                "${workspaceRoot}/node_modules/serverless/bin/serverless",
+                "node_modules/serverless/bin/serverless",
                 "invoke", 
-                "local", 
                 "-f", 
                 "generateNextVersion", 
                 "--path", 
-                "{}"
-            ]
+                "events/validRequest.json"
+            ],
+            "useWSL": true,
+            "timeout": 30000
         }
     ]
 }
